@@ -37,16 +37,16 @@ app.get('/variants', async (req, res) => {
 
 app.get('/stat', async (req, res) => {
   const stat  = await getData('stat.json')
+  res.setHeader('Cache-Control', 'max-age=0, no-cache, no-store')
   res.send(stat)
 })
 
 app.post('/vote', async (req, res) => {
   await addData(req.body.variants)
-  const stat  = await getData('stat.json')
-  res.send(stat)
+  res.status(200).end()
 })
 
-app.post('/getStat', async (req, res) => {
+app.post('/stat', async (req, res) => {
   const stat  = await getData('stat.json')
   res.setHeader('Content-Disposition', 'attachment; filename = stat.' + req.body.type)
   if(req.body.type === 'xml') {
